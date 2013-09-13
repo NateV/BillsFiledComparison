@@ -1,0 +1,16 @@
+body {
+	font-family:"Josefin Sans",sans-serif;
+}
+
+h3 {
+	text-align:center;
+	padding-top:20px;
+}
+
+.map {
+	stroke:black;
+}
+
+#mapUS {
+	border:1px solid black;	
+}

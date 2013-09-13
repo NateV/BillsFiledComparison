@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<title> Comparing Bill Introductions in the US states </title>
+		<meta charset="utf-8">
+		
+		<!--Frameworks-->
+		<script type="text/javascript" src="/Users/nathanvogel/Documents/Web projects/Jqueryfiles/jquery-1.10.2.js"></script>
+		<script type="text/javascript" src="/Users/nathanvogel/Documents/Web projects/Jqueryfiles/jquery-ui.js"> </script>
+		<script src="/Users/nathanvogel/Documents/Web projects/Jqueryfiles/d3.v3.js" charset="utf-8"></script>
+		
+		<!--Styles-->
+		<link type="text/css" rel="stylesheet" href="/Users/nathanvogel/Documents/Web projects/jqueryfiles/jquery-ui_redmond_theme.css">
+		<link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+		<link type="text/css" rel="stylesheet" href="BillsFiledComparison.css">
+	</head>
+	
+
+	<body>
+	
+		<div>
+			<h3> Bills Filed in the State Legislatures </h3>
+		</div>
+		
+		<div>
+			Distortion <select id="toggleDistort"></select>
+		</div>
+		
+		<div>
+			<svg height="400" width="100%" id="mapUS"> </svg>
+		</div>
+	
+		<div> 
+			<p id="source"> Sources: Natural Earth (shapefiles); http://prag.ma/code/d3-cartogram/cartogram.js (cartogram plugin); http://www.shpescape.com/mix/ (Shapefile to TopoJSON conversion)  </p>
+		</div>
+	
+		
+		<script type="text/javascript" src="Admin1_states_topoJSON.js"> </script>
+		<script src="http://d3js.org/topojson.v1.min.js"></script>
+		<script type="text/javascript" src="cartogram.js"> </script>
+		<script type="text/javascript" src="billsFiledData.js"></script>
+		<script type="text/javascript" src="billsFiledComparison.js"></script>
+	
+	</body>
+</html>
