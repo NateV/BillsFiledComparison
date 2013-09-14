@@ -8,11 +8,16 @@ var projection = d3.geo.albersUsa()
  				.scale(800)
  				.translate([width,height/2]);
 
+var plainProjection = d3.geo.albersUsa()
+ 				.scale(800)
+ 				.translate([width,height/2]);
+var plainPath = d3.geo.path().projection(plainProjection)
+
 var colorScale = d3.scale.linear().domain([0,10000]).range(["#8888ff","#ff00ff"]);
 				
 var path = d3.geo.path().projection(projection);
 
-var undistortedStates = topojson.feature(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469);
+//var undistortedStates = topojson.feature(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469);
 //console.log("States");
 //console.log(undistortedStates);
 
@@ -35,14 +40,16 @@ function updateMap() {
 	console.log("Updating map for the " + n + "th time.");
 	n++;
 	
-	var statePaths = d3.select("#mapUS").selectAll("path");
+	var statePaths = d3.select("#mapUS")
+		.selectAll("path");
 	var newFeatures;
+	var currentPath;
 	
 	if (isDistorted) {
 		console.log("map is distorted");
 		//change the value() function of the cartogram
 		cartogram.value(function(d) {
-			return (getBills(d.properties.name)*100);
+			return (getBills(d.properties.name)*500);
 		});
 		
 		//get the new features
@@ -54,29 +61,22 @@ function updateMap() {
 				.attr("fill", function(d) {
 					return "purple";
 				});
-		
-		
-
+		currentPath = cartogram.path;
+	
 	} else {
-		console.log("map is not distorted, in theory");
-		
-		//change the value of the cartogram
-		cartogram.value(function(d) {
-			return 1;
-		});
-		
 		//get the new features
-		newFeatures = cartogram(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469.geometries).features;
-		
+		newFeatures = topojson.feature(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469).features;
+
 		//set the data on the map
 		statePaths.data(newFeatures);
+		currentPath = plainPath;
 	}
 	
 	//create a transition
 	statePaths.transition()
 			  .duration(800)
 			  .ease("linear")
-			  .attr("d", cartogram.path)
+			  .attr("d", currentPath )
 			  .attr("fill", function(d) {
 					if (isDistorted===1) {
 					  return colorScale(getBills(d.properties.name))
@@ -84,7 +84,6 @@ function updateMap() {
 						return "#8888ff";
 					}
 			   });
-	
 }//end updateMap();
 
 
@@ -115,16 +114,8 @@ initMap();
 
 
 function initMap() {
-// 	cartogram.value(function(d) {
-// 		//has to return an integer. How do I make this not distort at all?
-// 		return ;
-// 	});
-	var plainProjection = d3.geo.albersUsa()
- 				.scale(800)
- 				.translate([width,height/2]);
-	var plainPath = d3.geo.path().projection(plainProjection)
-//	var plainFeatures = topojson(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469.geometries).features;
-	var plainFeatures = topojson.feature(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469.geometries);
+//	var plainFeatures = cartogram(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469.geometries).features;
+	var plainFeatures = topojson.feature(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469).features;
 	console.log("Plain features");
 	console.log(plainFeatures);
 	var statePaths = d3.select("#mapUS").selectAll("path")
@@ -134,7 +125,11 @@ function initMap() {
 					.attr("d",plainPath)
 					.attr("class","map")
 					.attr("fill", function(d) {
-						return "#ff00ff"
+						return "#8888ff";
+					})
+					.on("mouseover", function(d,i) {
+						console.log("Hovering over ");
+						console.log(d);
 					});
 }
 
