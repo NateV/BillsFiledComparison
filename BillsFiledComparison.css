@@ -1,5 +1,6 @@
 body {
 	font-family:"Josefin Sans",sans-serif;
+	background:#F9F9FF;
 }
 
 h3 {
@@ -8,9 +9,30 @@ h3 {
 }
 
 .map {
-	stroke:black;
+	opacity:.7;
+	fill:#8888ff;
+	stroke:#606678;
+}
+
+.state-hover {
+	fill:#8888ff;
+	stroke: #FFFB92;
+	stroke-width:3px;
+}
+
+.state-distorted {
+	stroke:#606678;
+}
+
+.state-distorted-hover {
+	stroke: #FFFB92;
+	stroke-width:3px;
 }
 
 #mapUS {
-	border:1px solid black;	
+	border:1px solid #6D7878;	
+}
+
+#detailsDiv {
+	border:1px solid black;
 }

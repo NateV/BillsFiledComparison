@@ -1,7 +1,7 @@
 //console.log(topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469);
 
 var width=500;
-
+var realWidth = document.getElementById("mapUS").getBoundingClientRect().width;
 var height=400;
 
 var projection = d3.geo.albersUsa()
@@ -16,6 +16,11 @@ var plainPath = d3.geo.path().projection(plainProjection)
 var colorScale = d3.scale.linear().domain([0,10000]).range(["#8888ff","#ff00ff"]);
 				
 var path = d3.geo.path().projection(projection);
+
+var stateNameDiv = d3.select("#mapUS").append("text").attr("x", 70).attr("y",70)
+						.attr("id","stateNameDiv"),
+	billsFiledDiv = d3.select("#mapUS").append("text").attr("x",realWidth-140).attr("y",70)
+				   		.attr("id","billsFiledDiv");
 
 //var undistortedStates = topojson.feature(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469);
 //console.log("States");
@@ -56,11 +61,10 @@ function updateMap() {
 		newFeatures = cartogram(topojsonStates, topojsonStates.objects.d1d33fb69d1c7961235a2b0d78778469.geometries).features;
 		console.log("new features");
 		console.log(newFeatures);
-		//set the data on the map
+		
+		//set the data on the map and change the class.
 		statePaths.data(newFeatures)
-				.attr("fill", function(d) {
-					return "purple";
-				});
+				.attr("class","state-distorted");
 		currentPath = cartogram.path;
 	
 	} else {
@@ -124,12 +128,28 @@ function initMap() {
 					.append("path")
 					.attr("d",plainPath)
 					.attr("class","map")
-					.attr("fill", function(d) {
-						return "#8888ff";
-					})
 					.on("mouseover", function(d,i) {
-						console.log("Hovering over ");
 						console.log(d);
+						d3.select("#stateNameDiv").text(d.properties.name);
+						d3.select("#billsFiledDiv").text(getBills(d.properties.name) + " bills.");
+						if(isDistorted===1) {
+							d3.select(this).attr("class","state-distorted-hover");
+							return;
+						} else {
+							d3.select(this).attr("class","state-hover");
+							return;
+						}
+						
+					})
+					.on("mouseleave", function(d,i) {
+//						d3.select("#detailsDiv").;
+						if (isDistorted===1) {
+							d3.select(this).attr("class","state-distorted");
+							return;
+						} else {
+							d3.select(this).attr("class","map");
+							return;
+						}
 					});
 }
 
