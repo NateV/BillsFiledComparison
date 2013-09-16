@@ -18,15 +18,18 @@ h3 {
 	fill:#8888ff;
 	stroke: #FFFB92;
 	stroke-width:3px;
+	opacity:1;
 }
 
 .state-distorted {
 	stroke:#606678;
+	opacity:.7;
 }
 
 .state-distorted-hover {
 	stroke: #FFFB92;
 	stroke-width:3px;
+	opacity:1;
 }
 
 #mapUS {
